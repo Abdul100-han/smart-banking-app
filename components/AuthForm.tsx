@@ -3,9 +3,31 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+
+
+import { z } from "zod"
+
+const formSchema = z.object({
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+})
+
+
 
 const AuthForm = ({type} : {type: string}  ) => {
 
+
+  export function ProfileForm() {
+    // 1. Define your form.
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        username: "",
+      },
+    })
     const [user, setUser] = useState(null);
 
   return (
@@ -25,23 +47,27 @@ const AuthForm = ({type} : {type: string}  ) => {
           <div className="flex flex-col gap-1 md:gap-3">
             <h1 className='text-24 lg:text-36 font-semibold text-gray-900'>
                 {user ? 'Liked Account' : 
-                type === 'sign-in' ? 'sign In' : 
+                type === 'sign-in' ? 'sign Up' : 
                 'Sign Up'
                 }
 
                 <p className="text-16 font-normal text-gray-600">
-                    {user ? 'Link your account to get stated ' : 'PLeasae enter your details'}
+                    {user ? 'Link your account to get stated ' :
+                     'PLeasae enter your details'}
                 </p>
             </h1>
-          </div>
+          </div> 
         </header>
 
         {user ? 
         <div className='flex flex-col gap-4'>
             {/* plaid lik */}
-        </div>     : 
-        
-        <>Formm</>
+        </div> : (
+          <>
+          FORM
+          </>
+        )
+  
     } 
 
     </section>
