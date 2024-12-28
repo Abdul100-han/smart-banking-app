@@ -19,14 +19,16 @@ import { Input } from "@/components/ui/input"
 import { ITEMS } from '@/constants'
 import CustomInputs from './CustomInputs'
 import { authFormSchema } from '@/lib/utils'
-import { Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation'
+import { signIn, signUp } from '@/lib/actions/user.actions'
 
 
 const formSchema = z.object({
   email: z.string().email(),
 })
 
-
+const router = useRouter();
 
 const AuthForm = ({ type }: { type: string }) => {
 
@@ -47,11 +49,34 @@ const AuthForm = ({ type }: { type: string }) => {
 
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsLoading(true)
-    console.log(values)
+    
+    try {
+      // Sign up with appWrite and create link token
+
+      if(type == 'sign-up') {
+        const newUser = await signUp(data);
+        setUser(newUser)
+;       }
+
+      if(type === 'sign-in') {
+          const response = await signIn({
+            email: data.email,
+            passward: data.password
+          });
+          if(response) router.push('/')
+
+      }
+    } catch (error) {
+      console.log(error);
+      
+    } finally {
+      setIsLoading(false)
+    }
+
     setIsLoading(false);
   }
 
@@ -110,6 +135,10 @@ const AuthForm = ({ type }: { type: string }) => {
                     control={form.control} name='address1'
                     label='address' placeholder='Enter your specific address'
                   />
+                  <CustomInputs
+                    control={form.control} name='city'
+                    label='City' placeholder='Enter your city'
+                  />
 
                   <div className='flex gap-4'>
                   <CustomInputs
@@ -121,7 +150,7 @@ const AuthForm = ({ type }: { type: string }) => {
                     label='Postal Code' placeholder='Example: 11101'
                     />
                     </div>
-                    
+
                     <div className="flex gap-4">
                   <CustomInputs
                     control={form.control} name='dateOfBirth'
