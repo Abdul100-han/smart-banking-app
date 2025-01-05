@@ -129,12 +129,12 @@ const AuthForm = ({ type }: { type: string }) => {
 
       </header>
 
-      {/* {user ? ( */}
+      {user ? (
         <div className='flex flex-col gap-4 '>
           {/* plaid Link */}
           <PlaidLink user={user} variant='primary' />
         </div>
-      {/* ) : ( */}
+      ) : (
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -215,7 +215,7 @@ const AuthForm = ({ type }: { type: string }) => {
             </Link>
           </footer>
         </>
-      {/* )} */}
+       )}  
 
     </section>
   )
