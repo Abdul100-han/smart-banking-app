@@ -3,7 +3,7 @@ import { Button } from './ui/button'
 import { StyledString } from 'next/dist/build/swc';
 import { useRouter } from 'next/navigation';
 import {PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink} from 'react-plaid-link'
-import { createLinkToken } from '@/lib/actions/user.actions';
+import { createLinkToken, exchangePublicToken } from '@/lib/actions/user.actions';
 
 export const PlaidLink = ({user, variant}: PlaidLinkProps) => {
 
@@ -22,10 +22,10 @@ export const PlaidLink = ({user, variant}: PlaidLinkProps) => {
     }, [user])
 
     const onSuccess = useCallback<PlaidLinkOnSuccess>(async (public_token: string) => {
-        // await exchangePublicToken({
-        //     publicToken: public_token,
-        //     user,
-        // })
+        await exchangePublicToken({
+            publicToken: public_token,
+            user,
+        })
         router.push('/');
     }, [user])
     const config: PlaidLinkOptions = {
