@@ -69,14 +69,14 @@ const AuthForm = ({ type }: { type: string }) => {
           city: data.city!,
           state: data.state!,
           postalCode: data.postalCode!,
-          dateOfBirth: data.dateOfBirth,
+          dateOfBirth: data.dateOfBirth!,
           ssn: data.ssn!,
           email: data.email,
           password: data.password
 
         }
 
-        const newUser = await signUp(data);
+        const newUser = await signUp(userData);
         setUser(newUser)
 ;       }
 
