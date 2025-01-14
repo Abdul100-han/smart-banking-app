@@ -221,4 +221,4 @@ const AuthForm = ({ type }: { type: string }) => {
   )
 }
 
-export default AuthForm
+export default AuthForm 
